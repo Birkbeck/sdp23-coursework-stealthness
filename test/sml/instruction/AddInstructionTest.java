@@ -29,20 +29,27 @@ class AddInstructionTest {
   }
 
   @Test
-  void executeValid() {
-    registers.set(EAX, 5);
-    registers.set(EBX, 6);
+  void executeValidAddInstructionUsingTwoPositiveInts() {
+    final int VALUE_1 = 5;
+    final int VALUE_2 = 6;
+
+    registers.set(EAX, VALUE_1 );
+    registers.set(EBX, VALUE_2 );
     Instruction instruction = new AddInstruction(null, EAX, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(11, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(VALUE_1 + VALUE_2, machine.getRegisters().get(EAX));
   }
 
   @Test
-  void executeValidTwo() {
-    registers.set(EAX, -5);
-    registers.set(EBX, 6);
+  void executeValidAddInstructionUsingOnePositiveOneNegativeInts() {
+
+    final int VALUE_1 = 5;
+    final int VALUE_2 = 6;
+
+    registers.set(EAX, -VALUE_1);
+    registers.set(EBX, VALUE_2);
     Instruction instruction = new AddInstruction(null, EAX, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(1, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(VALUE_2 - VALUE_1, machine.getRegisters().get(EAX));
   }
 }
