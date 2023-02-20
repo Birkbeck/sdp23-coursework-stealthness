@@ -1,9 +1,8 @@
 package sml.instruction;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import sml.Instruction;
 import sml.Machine;
 import sml.Registers;
@@ -51,5 +50,24 @@ class SubInstructionTest {
     Instruction instruction = new SubInstruction(null, EAX, EBX);
     instruction.execute(machine);
     Assertions.assertEquals(VALUE_2 + VALUE_1, machine.getRegisters().get(EAX));
+  }
+
+  @DisplayName("Should evaluate the correct SubInstruction")
+  @ParameterizedTest(name = "{index} => a={0} - b={1} the expected output is {2}")
+  @CsvSource({
+          "1, 1, 0",
+          "2, 2, 0",
+          "4, 2, 2",
+          "2, 4, -2",
+          "2, -4, 6",
+          "-2, 4, -6",
+          "-2, -4, 2"
+  })
+  void executeParameterizedTest(int value1, int value2, int expectedValue){
+    registers.set(EAX, value1);
+    registers.set(EBX, value2);
+    Instruction instruction = new SubInstruction(null, EAX, EBX);
+    instruction.execute(machine);
+    Assertions.assertEquals(expectedValue, machine.getRegisters().get(EAX));
   }
 }
